@@ -2,8 +2,11 @@ import { Link, NavLink } from "react-router-dom";
 import { HiHome, HiUsers, HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { GoTriangleDown } from "react-icons/go";
 import Avatar from "./Avatar";
+import { useMyProfile } from "../features/users/useMyProfile";
 
 function Header() {
+  const { user: { profileImageUrl } = {} } = useMyProfile();
+
   return (
     <header className="flex items-center justify-between max-w-7xl mx-auto">
       <div className="flex items-center gap-2">
@@ -25,7 +28,7 @@ function Header() {
             to="/feed"
             className="flex flex-col items-center text-gray-600 px-3 py-1"
           >
-            <HiHome size={25} />
+            <HiHome size={32} />
             <span className="text-xs">Home</span>
           </NavLink>
         </li>
@@ -34,13 +37,13 @@ function Header() {
             to="/mynetwork"
             className="flex flex-col items-center text-gray-600 px-3 py-1"
           >
-            <HiUsers size={25} />
+            <HiUsers size={32} />
             <span className="text-xs">My Network</span>
           </NavLink>
         </li>
         <li>
           <button className="flex flex-col items-center text-gray-600 px-3 py-1">
-            <Avatar size={25} />
+            <Avatar size={8} avatar={profileImageUrl} />
             <span className="flex items-center">
               <span className="text-xs">Me</span>
               <GoTriangleDown />

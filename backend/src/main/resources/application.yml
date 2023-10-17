@@ -1,0 +1,18 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/linkedin?createDatabaseIfNotExist=true
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+app:
+  jwt:
+    secret: 'I0hW4+Ogy4hT61+cm7fMLOTSq60X52obH7ga335w4gk9IHpMIzwbpgBpKEd90Zqk'
+    expiration-in-ms: 3_600_000
+  upload-dir: uploads
+

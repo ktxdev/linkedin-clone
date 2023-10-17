@@ -9,7 +9,7 @@ function Post() {
     <li>
       <Card className="space-y-2">
         <div className="flex items-center px-4 gap-1">
-          <Avatar size={50} />
+          <Avatar size={16} />
           <div>
             <h3 className="text-sm font-semibold">Tinashe Huvaya</h3>
             <p className="text-sm">Java Backend Developer</p>
