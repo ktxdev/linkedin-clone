@@ -5,12 +5,15 @@ import IconButton from "../../ui/IconButton";
 import { FaImage } from "react-icons/fa6";
 import { useMyProfile } from "../users/useMyProfile";
 import { useRef, useState } from "react";
+import { usePost } from "./usePost";
+import Spinner from "../../ui/Spinner";
 
 function PostEditor({ onCloseModal }) {
   const postImageRef = useRef();
-  const [postImage, setPostImage] = useState(null);
   const [postText, setPostText] = useState("");
+  const [postImage, setPostImage] = useState(null);
   const { user: { profileImageUrl } = {} } = useMyProfile();
+  const { isPosting, createPost } = usePost();
 
   function onPostImageChanged(e) {
     const file = e.target.files[0];
@@ -24,6 +27,19 @@ function PostEditor({ onCloseModal }) {
     };
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    createPost(
+      { text: postText, image: postImage },
+      {
+        onSettled: () => {
+          onCloseModal();
+        },
+      }
+    );
+  }
+
   return (
     <div className="p-8 ">
       <IconButton className="absolute top-5 right-5" onClick={onCloseModal}>
@@ -35,13 +51,13 @@ function PostEditor({ onCloseModal }) {
           <h3 className="text-lg">Sean Huvaya</h3>
         </div>
       </div>
-      <form className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <textarea
-          value={postText}
-          onChange={(e) => setPostText(e.target.value)}
           className="w-full p-2 text-xl mt-8 resize-none outline-none"
           placeholder="What do you want to talk about?"
           rows={`${postImage ? 5 : 10}`}
+          value={postText}
+          onChange={(e) => setPostText(e.target.value)}
         ></textarea>
         {postImage && (
           <div className="group relative w-52 rounded-lg bg-gray-400">
@@ -67,8 +83,8 @@ function PostEditor({ onCloseModal }) {
               id="media"
               hidden
               type="file"
-              onChange={onPostImageChanged}
               accept=".png,.jpg,.jpeg,.svg"
+              onChange={onPostImageChanged}
             />
             <FaImage size={20} />
           </label>
@@ -80,7 +96,7 @@ function PostEditor({ onCloseModal }) {
             rounded={true}
             disabled={!postImage && !postText}
           >
-            Post
+            {isPosting ? <Spinner size={10} /> : "Post"}
           </Button>
         </div>
       </form>

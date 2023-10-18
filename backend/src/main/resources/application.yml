@@ -9,6 +9,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
 
 app:
   jwt:

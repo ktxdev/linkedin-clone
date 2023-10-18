@@ -21,6 +21,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleSecurityException(Exception ex) {
+        ex.printStackTrace();
         ErrorResponse response;
 
         if (ex instanceof BadCredentialsException) {

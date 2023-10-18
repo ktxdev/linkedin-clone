@@ -1,13 +1,15 @@
 import { AUTH_TOKEN_KEY } from "../utils/constants";
 
 export async function postData(url = "", data = {}) {
-  const accessToken = localStorage.getItem(AUTH_TOKEN_KEY)?.accessToken;
+  const accessToken = JSON.parse(
+    localStorage.getItem(AUTH_TOKEN_KEY)
+  )?.accessToken;
 
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
 
   if (accessToken) {
-    headers.append("Authorization", accessToken);
+    headers.append("Authorization", `Bearer ${accessToken}`);
   }
 
   const res = await fetch(url, {
@@ -19,6 +21,32 @@ export async function postData(url = "", data = {}) {
   const responseData = await res.json();
 
   if (!(res.status / 100 === 2)) {
+    return { error: responseData.message || "Failed to post data" };
+  }
+
+  return { data: responseData };
+}
+
+export async function postFormData(url = "", data = {}) {
+  const accessToken = JSON.parse(
+    localStorage.getItem(AUTH_TOKEN_KEY)
+  )?.accessToken;
+
+  const headers = new Headers();
+
+  if (accessToken) {
+    headers.append("Authorization", `Bearer ${accessToken}`);
+  }
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: data,
+  });
+
+  const responseData = await res.json();
+
+  if (!(Math.floor(res.status / 100) === 2)) {
     return { error: responseData.message || "Failed to post data" };
   }
 

@@ -30,6 +30,7 @@ public class WebSecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry.requestMatchers("/api/v1/auth/**").permitAll())
+                .authorizeHttpRequests(registry -> registry.requestMatchers(HttpMethod.GET, "/api/v1/posts/image/**").permitAll())
                 .authorizeHttpRequests(registry -> registry.requestMatchers(HttpMethod.GET, "/api/v1/users/profile/avatar/**").permitAll())
                 .authorizeHttpRequests(registry -> registry.anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)

@@ -1,17 +1,15 @@
-import Avatar from "../ui/Avatar";
-import { AiFillLike, AiOutlineLike } from "react-icons/ai";
-import { FaRegCommentDots } from "react-icons/fa6";
-import Card from "../ui/Card";
 import Post from "../features/posts/Post";
-import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import CreatePost from "../features/posts/CreatePost";
 import ProfileCard from "../ui/ProfileCard";
+import { usePosts } from "../features/posts/usePosts";
 
 function Feed() {
   useEffect(() => {
     document.title = "Feed | LinkedIn";
   }, []);
+
+  const { isLoading, posts } = usePosts();
 
   return (
     <div className="grid grid-cols-8 gap-6 py-6">
@@ -23,9 +21,7 @@ function Feed() {
           <CreatePost />
           <hr />
           <ul className="space-y-4">
-            {new Array(10).fill(0).map((_, i) => (
-              <Post key={i} />
-            ))}
+            {posts && posts.map((post) => <Post key={post.id} post={post} />)}
           </ul>
         </div>
       </div>

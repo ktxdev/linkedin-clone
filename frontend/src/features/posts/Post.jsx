@@ -4,28 +4,22 @@ import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa6";
 import Button from "../../ui/Button";
 
-function Post() {
+function Post({ post }) {
   return (
     <li>
-      <Card className="space-y-2">
+      <Card className="space-y-2 py-2">
         <div className="flex items-center px-4 gap-1">
-          <Avatar size={16} />
+          <Avatar size={16} avatar={post.postedBy.profileImageUrl} />
           <div>
-            <h3 className="text-sm font-semibold">Tinashe Huvaya</h3>
+            <h3 className="text-sm font-semibold">
+              {post.postedBy.firstName} {post.postedBy.lastName}
+            </h3>
             <p className="text-sm">Java Backend Developer</p>
           </div>
         </div>
         <div>
-          <p className="text-sm px-4 py-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-            sapiente dignissimos ab voluptate dolore accusamus alias nobis nulla
-            soluta beatae, nisi delectus quasi inventore, itaque necessitatibus
-            sit sunt aliquid fugit?
-          </p>
-          <img
-            src="https://imgs.search.brave.com/XYnhfqrDJVnHVA0Ljz3bj-FH865C1SSj_ZK40bnQSwU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNS8w/OS8wNS8yMC8wMi9j/b2RpbmctOTI0OTIw/XzY0MC5qcGc"
-            alt="post"
-          ></img>
+          <p className="text-sm px-4 py-2">{post.text}</p>
+          {post.imageUrl && <img src={post.imageUrl} alt="post"></img>}
           <div className="flex items-center justify-between px-2 pt-1">
             <span className="flex items-center gap-1">
               <AiFillLike className="text-blue-500" />
