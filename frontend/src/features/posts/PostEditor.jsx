@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 function PostEditor({ onCloseModal }) {
   const postImageRef = useRef();
   const [postImage, setPostImage] = useState(null);
+  const [postText, setPostText] = useState("");
   const { user: { profileImageUrl } = {} } = useMyProfile();
 
   function onPostImageChanged(e) {
@@ -24,7 +25,7 @@ function PostEditor({ onCloseModal }) {
   }
 
   return (
-    <div className="p-8 space-y-4">
+    <div className="p-8 ">
       <IconButton className="absolute top-5 right-5" onClick={onCloseModal}>
         <HiXMark />
       </IconButton>
@@ -34,46 +35,55 @@ function PostEditor({ onCloseModal }) {
           <h3 className="text-lg">Sean Huvaya</h3>
         </div>
       </div>
-      <textarea
-        className="w-full p-2 text-xl mt-8 resize-none outline-none"
-        placeholder="What do you want to talk about?"
-        rows={`${postImage ? 5 : 10}`}
-      ></textarea>
-      {postImage && (
-        <div className="relative w-52 rounded-lg bg-gray-400">
-          <img ref={postImageRef} className="object-cover" />
-          <IconButton
-            className="absolute top-1 right-1"
-            onClick={() => {
-              postImageRef.current.src = "";
-              setPostImage(null);
-            }}
+      <form className="space-y-4">
+        <textarea
+          value={postText}
+          onChange={(e) => setPostText(e.target.value)}
+          className="w-full p-2 text-xl mt-8 resize-none outline-none"
+          placeholder="What do you want to talk about?"
+          rows={`${postImage ? 5 : 10}`}
+        ></textarea>
+        {postImage && (
+          <div className="group relative w-52 rounded-lg bg-gray-400">
+            <img ref={postImageRef} className="object-cover" />
+            <IconButton
+              className="absolute hidden group-hover:block top-1 right-1 transition-all duration-300"
+              onClick={(e) => {
+                e.preventDefault();
+                postImageRef.current.src = "";
+                setPostImage(null);
+              }}
+            >
+              <HiXMark />
+            </IconButton>
+          </div>
+        )}
+        {!postImage && (
+          <label
+            htmlFor="media"
+            className="flex items-center justify-center cursor-pointer w-16 h-16 bg-stone-200 hover:bg-stone-300 text-gray-600 p-2 rounded-full transition-colors duration-100"
           >
-            <HiXMark />
-          </IconButton>
+            <input
+              id="media"
+              hidden
+              type="file"
+              onChange={onPostImageChanged}
+              accept=".png,.jpg,.jpeg,.svg"
+            />
+            <FaImage size={20} />
+          </label>
+        )}
+        <hr />
+        <div className="flex items-center justify-end">
+          <Button
+            type="primary"
+            rounded={true}
+            disabled={!postImage && !postText}
+          >
+            Post
+          </Button>
         </div>
-      )}
-      {!postImage && (
-        <label
-          htmlFor="media"
-          className="flex items-center justify-center cursor-pointer w-16 h-16 bg-stone-200 hover:bg-stone-300 text-gray-600 p-2 rounded-full transition-colors duration-100"
-        >
-          <input
-            id="media"
-            hidden
-            type="file"
-            onChange={onPostImageChanged}
-            accept=".png,.jpg,.jpeg,.svg"
-          />
-          <FaImage size={20} />
-        </label>
-      )}
-      <hr />
-      <div className="flex items-center justify-end">
-        <Button type="primary" rounded={true} disabled={true}>
-          Post
-        </Button>
-      </div>
+      </form>
     </div>
   );
 }
